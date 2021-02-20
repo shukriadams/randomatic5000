@@ -1,12 +1,71 @@
 # - Use {} to wrap a set name, egs "... {mysetName} ..."
 # - Define multiple set names by separting them with "|", egs "... {mysetName|anotherSet} ..."
+# - // denotes optional items, egs "... /foo/ ..." here "foo" has a 50% chance of appearing
+# - You can also make sets options "... /{myset}/ ..." 
+# - as well as mixed"... /foo {myset}/ ..." 
+# - use [X{set}] to denonate how many times a set value will be injected, egs "... [2{mysetName}] ..." mysetName will be added twice
+# - use [X-Y{set}] to set a min and max nr of repeats (randomly chosen)
+# - use [X-Y,{set}] to set a separator, here "," is specified
+fudges:
+    call: carl, Cull, Paul
+    duty: Ditty, Derpy
+
+prefixes:
+    pre1:
+        items : counter, mega, ulta, deep. battle, cyber, Xeno, robo, Morrow, Never
+        chance: 30
+        sets: subjects
+        position: pre # pre|post
+    
+    post1:
+        items: mageddon
+        chance: 10
+        position: post
+        sets: actionLeadWord
+    
+    post2:
+        items: hammer, rinser
+        chance: 30
+        position: post
+        sets: subjects
+
 templates:
     - "{object} of the {creature}"
     - "Journey of the {ship|creature}'s"
-
+    simple: "Journey of the {ship}"
+    - "Attack of the {simple}'s"
+    more:
+        - thing
+        - another thing
+        - {more}
+    
 sets:
-    object : MacGuffin, Sword, Cube, Tesseract, Tome, Elixir
-    ship: Star Disturber, Enterpraise, Beagle
+    genreType: Sim, Simulator, Manager, Memer, Farmer, Shooter, Cleaner, Flipper, Rinser
+    actionLeadWord: 
+        - Call
+        - Fall
+        - Age
+        - Doom
+        - Raider
+        - Quest
+        - Squadron
+        - Glory
+        - Spelun
+        - Attack
+        - Mist
+        - Mystery
+        - Master
+        - Crusade
+        - Revenge
+        - Crisis
+        - Fellowship
+        - Job 
+        - Survival
+    object: MacGuffin, Sword, Cube, Tesseract, Tome, Elixir
+    subjects: Alien, Orc, Cthulu, Trump, Stalin, Pirate, Predator, Dictator, Florida-man, Cannibal, soldier, General, Parachute, sniper, Hero, Enemy, Peon, Cop, Surgeon, Barbarian, Gladiator
+    ship: Star Disturber, Enterpriser, Death Stern, Tie Fitter, X-Wang, 
+    hyperbole: Extreme, Ultimate, Final, Legendary, Megatronic, Maximum, BuyMeNow
+    industryTerms: Mobile, VR, DLC, GOTY, Remaster, {hyperbole} /Collector's/ Edition, /[2-33,{hyperbole}]'s/ Edition
     creature: 
         - zombie
         - dragon

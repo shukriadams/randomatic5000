@@ -3,4 +3,5 @@ const Randomtic = require('./index'),
         settings : './example.yml'
     })
 
-console.log(randomatic.next())
+for (let i = 0; i < 1 ; i ++)
+    console.log(randomatic.next())

@@ -2,29 +2,31 @@ const fs = require('fs-extra'),
     yaml = require('js-yaml'),
     sample = require('lodash.sample'),
     Chance = require('chance'),
+    util = require('util'),
     chance = new Chance()
 
 function parseTemplate(template){
     const parsed = {
+        raw: template,
         parts : []
     }
+
     if (!typeof template === 'string')
         throw `template ${template} should be a string`
 
     const parts = template.split(' ')
     for (const part of parts){
+        const match = part.match(/{(.*)}/)
 
-        let partclean = part.trim(),
-            match = partclean.match(/^{(.*)}$/)
         if (match){
+            const rawToken = match.pop()
             parsed.parts.push({
-                isToken : true,
                 part,
-                token : match.pop()
+                rawToken,
+                tokens : rawToken.split('|')
             })
         } else {
             parsed.parts.push({
-                isToken : false,
                 part
             })
         }
@@ -90,35 +92,38 @@ module.exports = class {
         for (const templateRaw of this.settings.templates){
             const parsedTemplate = parseTemplate(templateRaw)
             for (let part of parsedTemplate.parts){
-                if (!part.isToken)
+                if (!part.tokens)
                     continue
 
-                if (!this.settings.sets[part.token])
-                    throw `template "${templateRaw}" requires a set "${part.token}" that is not defined`
+                for (const token of part.tokens)
+                    if (!this.settings.sets[token])
+                        throw `template "${templateRaw}" requires a set "${token}" that is not defined`
             }
 
             _parsedTemplates.push(parsedTemplate)
         }
-
-
-        console.log(this.settings)
     }
 
     next(){
         const template = sample(_parsedTemplates)
-        console.log(template)
+        
+        // console.log(util.inspect(_parsedTemplates, { showHidden: false, depth: null }))
 
         let output = ''
         for (const part of template.parts){
-            if (part.isToken){
-                const set = this.settings.sets[part.token]
-                output += part.part.replace(`{${part.token}}`, sample(set))
+
+            if (part.tokens){
+                const set = this.settings.sets[sample(part.tokens)]
+                output += part.part.replace(`{${part.rawToken}}`, sample(set))  
             } else
                 output += part.part
 
             output = `${output} `
         }
 
-        return output.trim()
+        return { 
+            template : template.raw,
+            result : output.trim()
+        }
     }
 }

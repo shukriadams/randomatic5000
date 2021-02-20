@@ -1,7 +1,12 @@
+# - Use {} to wrap a set name, egs "... {mysetName} ..."
+# - Define multiple set names by separting them with "|", egs "... {mysetName|anotherSet} ..."
 templates:
-    - "{objects} of {creature}"
+    - "{object} of the {creature}"
+    - "Journey of the {ship|creature}'s"
+
 sets:
-    objects : Macguffin, Sword, Cube, Tesseract, Tome, Elixir, Star Disturber, Enterpraise
+    object : MacGuffin, Sword, Cube, Tesseract, Tome, Elixir
+    ship: Star Disturber, Enterpraise, Beagle
     creature: 
         - zombie
         - dragon
@@ -9,7 +14,6 @@ sets:
         - jellyfish
         - Spider
         - Wraith
-        - Beagle
         - Wolf
         - Alien
         

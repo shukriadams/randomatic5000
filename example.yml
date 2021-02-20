@@ -1,0 +1,15 @@
+templates:
+    - "{objects} of {creature}"
+sets:
+    objects : Macguffin, Sword, Cube, Tesseract, Tome, Elixir, Star Disturber, Enterpraise
+    creature: 
+        - zombie
+        - dragon
+        - demon 
+        - jellyfish
+        - Spider
+        - Wraith
+        - Beagle
+        - Wolf
+        - Alien
+        

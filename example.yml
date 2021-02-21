@@ -7,15 +7,23 @@
 # - use [X-Y{set}] to set a min and max nr of repeats (randomly chosen)
 # - use [X-Y{set},] to set a separator, here "," is specified
 templates:
-    two : "{franchise} {count} : {struggle} of the {ship|creature} /in {location}/"
-    action_verb_era_subject: "{actionLeadWord} {verb} {era} {status}"
-    animal_profession: "{animal} {profession}"
+    basic: "/{prefix}/{subject} {subject_abstract} of {adjective} {status}"
+    more: "{hyperbole} /{prefix}/{subject}"
+    wtf: "{prefix}{postfix} {bullshit} : [2-3{hyperbole} ] {edition}"
+    franchise1 : "{franchise} {count} : {struggle} of the {ship|creature} /in {location}/"
+    franchise2 : "{franchise} : {person}'s {struggle} {count} /- {edition}/"
+    create: "{creature} {genreType} /{hyperbole}/"
+    action_verb_era_subject: "{actionLeadWord} {verb} {time} {status}"
+    animal_profession: "/{prefix}/{animal} {profession} /{bullshit}/"
     the_curse_of: "The Curse of {animal} {place} : {person}'s {actionLeadWord}"
     x_ofthe_creaure : "{actionLeadWord} of the {creature}/!/"
-    this_time_its: "{current} it's {this_time}!"
-    location_genre: "{location} {place}"
-    location_genre_ultra: "{location_genre} - {person}'s {actionLeadWord} {count} : {this_time_its}" 
+    location_genre: "{location} {place} /{hyperbole}/{profession}"
+    location_genre_ultra: "{location_genre} - {person}'s {actionLeadWord} {count} : {current} it's {this_time}!" 
     harry: "{adjective} {attire} {person} in the {place} of the {adjective} {creature} /Part {count}/ /- {edition}/"
+    hard: "{person|profession}'s {adversity}"
+    drama: "{adversity} on the /{creature} /{ship}"
+    sportsball: "/{hyperbole} /{sport} - {location} edition"
+    
 
 sets:
     actionLeadWord: 
@@ -75,12 +83,17 @@ sets:
         - trouser
         - blouse
         - shirt
+    adversity: Plague, invasion, threat, danger, struggle, Pestilence, Disaster, Tragedy, Trial, Peril
     bullshit: Battle Royale, AD, 5000, 4K, 10K
     count:
         - 2
+        - 4
         - 5
         - 9
+        - 13
         - 12 
+        - 19
+        - 21
         - 27
     creature: 
         - Alien    
@@ -92,13 +105,15 @@ sets:
         - Wraith
         - zombie
     current: This time, now
+    
     edition: DLC, GOTY, Remastered, {hyperbole} Edition, /[1-3{hyperbole} ]/ Collector's Edition
-    era: Ancient, Modern, Future, Post-Modern, Recent
+    
     franchise: 
         - Star Battles 
         - Tony Hark Rollerskating
         - Star Track
         - Strikecounter
+        - Encounter strike
         - Start Rek 
         - Warecraft
         - Jeeves Bond
@@ -106,7 +121,7 @@ sets:
         - Left 4 Undead
     genreType: Sim, Simulator, Manager, Memer, Farmer, Shooter, Cleaner, Flipper, Rinser
     geography: Euro
-    hyperbole: Extreme, Most, Ultimate, Final, Legendary, Megatronic, Maximum, JustBuyMe
+    hyperbole: Extreme, Ultimate, Final, Legendary, Megatronic, Maximum
     location: Euro, Mars, Phobos, Darth Star, Azurewrath, Florida, Universe
     object: 
         - Cube 
@@ -115,7 +130,7 @@ sets:
         - Sword 
         - Tesseract 
         - Tome 
-    person: Shattner, Trump, Damian 
+    person: Shattner, Trump, Damian, Stalin, Venkman
     place: island, colony, zoo, office, arena, land, city, town, village, pit,  dungeon, hospital, theme park, Castle, College
     platforms: Mobile, VR
     prefix:
@@ -133,9 +148,9 @@ sets:
         - mageddon
         - morph
     profession: Surgeon, Hunter Doctor, Plumber, Soldier, Hygenist, Auditor
-    ship: Star Disturber, Enterpriser, Death Stern, Tie Fitter, X-Wang 
-    sport: rollerblading, Golf, Soccer, Ice Hockey 
-    subjects: 
+    ship: Star Disturber, Enterpriser, Death Moon, Tie Fitter, X-Wang, Titanic
+    sport: rollerballing, Golf, Soccer, Ice Hockey, Irongrid 
+    subject: 
         - Alien 
         - Orc 
         - Cthulu 
@@ -170,6 +185,7 @@ sets:
     status:
         - Duty
         - Freedom
+        - Glory
         - Justice
         - Destiny
         - Honor
@@ -180,10 +196,15 @@ sets:
         - Quest
         - Mission
         - Obstacle
+        - Crash
+        - Fall
         - Trial
-        - Warfare    
+        - Warfare 
+        - Struggle   
+    time: Past, Ancient, Modern, Future, Post-Modern, Recent
     this_time: war, warm, personal, love, Trump, over, bs, on
     verb: in, of, of the, from
+
 modifiers:
     fudge1:
         type: replace

@@ -14,4 +14,4 @@ const Randomtic = require('./index'),
     randomatic = new Randomtic(settings)
 
 for (let i = 0; i < tries ; i ++)
-    console.log(randomatic.next().result)
+    console.log(randomatic.next())

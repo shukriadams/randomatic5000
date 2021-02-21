@@ -21,7 +21,9 @@ let _settings = {
     sets: {}
 }
 const baseLikelihood = 50,
-    substituteRegex = /{(.[^\/]*)}/,
+    // look for text enclosed in "{ }". Ignore text that contains "\", "[" and "]", as these
+    // belong to other wrappers
+    substituteRegex = /{(.[^\/\[\]]*)}/,
     optionalRegex = /\/(.*)\//,
     // entirely enclosed in [ ]
     // group1 ([0-9]+) : required, integer, nr of times to repeat, must be present
@@ -31,6 +33,41 @@ const baseLikelihood = 50,
     repeatingSubstituteRegex = /\[([0-9]+)([-]?[0-9]+)?{(.*)}(.*?)\]/
 
 function processTemplate(string){
+    let words = [],
+        sentence = string
+
+    let i = 0
+    while(sentence.length){
+        const match = findBestNextDo(sentence)
+        if (match){
+            if (match.start > 0)
+                words.push(sentence.substring(0, match.start))
+
+            words.push(sentence.substring(match.start, match.reach))
+            sentence = sentence.substring(match.reach + 1)
+
+        } else {
+            const nextSpace = sentence.indexOf(' ')
+            if (nextSpace === -1){
+                words.push(sentence)
+                sentence = ''
+            } else {
+                words.push(0, sentence.substring(nextSpace))
+                sentence = sentence.substring(nextSpace + 1)
+            }
+        }
+
+        // runaway prevention
+        i++
+        if (i > 1000)break
+    }
+
+    let rendered = []
+    for (let word of words)
+        rendered.push(processTemplateWord(word))
+    
+    return rendered.join('').trim()
+
     return string
         .split(' ')
         .map(word => processTemplateWord(word))
@@ -79,7 +116,6 @@ const processors = {
 
             if (!set)
                 throw `Set ${setName} doesnt exist`
-
             
             subs.push(sample(set))
         }
@@ -123,8 +159,8 @@ function processTemplateWord(word){
             throw `too many iterations processing "${word}" - is this a circular reference?`
 
         const nextFunction = findBestNextDo(word)
-        if (nextFunction)
-            word = processors[nextFunction](word)
+        if (nextFunction.function)
+            word = processors[nextFunction.function](word)
 
         if (processed === word)
             break
@@ -135,7 +171,7 @@ function processTemplateWord(word){
     return word
 }
 
-function findBestNextDo(word){
+function findBestNextDo(string){
     const checks = {
         // hash names must match function names in "processors" object
         doOptional : { regex : optionalRegex },
@@ -145,30 +181,37 @@ function findBestNextDo(word){
 
     // find the length of enclosed text returned by each regex
     for (let check in checks){
-        let match = word.match(checks[check].regex)
-        if (match)
+        let match = string.match(checks[check].regex)
+        if (match){
             checks[check].length = match[0].length
+            checks[check].start = string.indexOf(match[0])
+            checks[check].reach = checks[check].start + match[0].length
+        }
         
     }
 
     // return the name of the pattern with the longest match
     let maxLength = 0,
-        name = null
+        name = null,
+        start = 0,
+        reach = 0
 
     for (let check in checks){
         if (checks[check].length && checks[check].length > maxLength){
             name = check
             maxLength = checks[check].length
+            start = checks[check].start
+            reach = checks[check].reach
         }
     }
     
     /*
     if (name)
-        console.log('function > ', name, 'on', word)
+        console.log('function > ', name, 'on', string)
     else
-        console.log('passthrough >', word)
+        console.log('passthrough >', string)
     */
-    return name
+    return { function : name, length : maxLength, start, reach }
 }
 
 

@@ -7,22 +7,17 @@
 # - use [X-Y{set}] to set a min and max nr of repeats (randomly chosen)
 # - use [X-Y{set},] to set a separator, here "," is specified
 templates:
+    two : "{franchise} {count} : {struggle} of the {ship|creature} /in {location}/"
+    action_verb_era_subject: "{actionLeadWord} {verb} {era} {status}"
     animal_profession: "{animal} {profession}"
-    the_curse_of: "The Curse of {animal_profession} : {person}'s {actionLeadWord}"
-
-hide:
+    the_curse_of: "The Curse of {animal} {place} : {person}'s {actionLeadWord}"
     x_ofthe_creaure : "{actionLeadWord} of the {creature}/!/"
-    two : Journey of the {ship|creature}'s
-    simple: Journey of the {ship}
-    more: thing another thing {more}
-    this_time_its: This time it's {this_time}!
+    this_time_its: "{current} it's {this_time}!"
+    location_genre: "{location} {place}"
+    location_genre_ultra: "{location_genre} - {person}'s {actionLeadWord} {count} : {this_time_its}" 
+    harry: "{adjective} {attire} {person} in the {place} of the {adjective} {creature} /Part {count}/ /- {edition}/"
 
 sets:
-    animal: Deer, Bear, Rodent, Chimpanzee
-    bullshit: Battle Royale, AD, 5000, 4K, 10K
-    
-    era: Ancient, Modern, Future, Post-Modern
-    genreType: Sim, Simulator, Manager, Memer, Farmer, Shooter, Cleaner, Flipper, Rinser
     actionLeadWord: 
         - Call
         - Fall
@@ -32,7 +27,6 @@ sets:
         - Quest
         - Squadron
         - Glory
-        - Spelun
         - Attack
         - Mist
         - Mystery
@@ -43,27 +37,153 @@ sets:
         - Fellowship
         - Job 
         - Survival
-    object: MacGuffin, Sword, Cube, Tesseract, Tome, Elixir
-    subjects: Alien, Orc, Cthulu, Trump, Stalin, Pirate, Predator, Dictator, Florida-man, Cannibal, soldier, General, Parachute, sniper, Hero, Enemy, Peon, Cop, Surgeon, Barbarian, Gladiator
-    ship: Star Disturber, Enterpriser, Death Stern, Tie Fitter, X-Wang, 
-    hyperbole: Extreme, Most, Ultimate, Final, Legendary, Megatronic, Maximum, JustBuyMe
-    platforms: Mobile, VR
-    edition: DLC, GOTY, Remaster, {hyperbole} Edition, /[1-3{hyperbole} ]/ Collector's Edition
-    geography: Euro
-    place: island, colony, zoo, office, 
-    profession: Surgeon, Hunter Doctor, Plumber, Soldier, Hygenist, Auditor
-    franchis: Star Battles, Tony Hark Rollerskating, Star Track, Strikecounter, Start Rek, Warecraft, Jeeves Bond, Hitterman, Left 4 Undead
+    adjective:
+        - Mighty
+        - Last
+        - Orange
+        - Heroic
+        - Dank
+        - Derp
+        - Moist
+        - Elite
+        - Epic
+        - Alien
+        - Instant
+        - Adequate
+        - MIA
+        - KIA
+        - POW
+        - Polite
+        - Lovecraftian
+        - Shattered
+        - Business
+        - Perkele
+        - Dire
+        - Free
+        - Antifa
+        - Universal
+        - Mortal
+        - Toxic
+        - Passive-aggressive
+        - Immortal
+        - Demonic
+        - Killer
+    animal: Deer, Bear, Rodent, Chimpanzee
+    attire :
+        - suit
+        - hat
+        - trouser
+        - blouse
+        - shirt
+    bullshit: Battle Royale, AD, 5000, 4K, 10K
+    count:
+        - 2
+        - 5
+        - 9
+        - 12 
+        - 27
     creature: 
-        - zombie
-        - dragon
+        - Alien    
         - demon 
+        - dragon
         - jellyfish
         - Spider
-        - Wraith
         - Wolf
-        - Alien
+        - Wraith
+        - zombie
+    current: This time, now
+    edition: DLC, GOTY, Remastered, {hyperbole} Edition, /[1-3{hyperbole} ]/ Collector's Edition
+    era: Ancient, Modern, Future, Post-Modern, Recent
+    franchise: 
+        - Star Battles 
+        - Tony Hark Rollerskating
+        - Star Track
+        - Strikecounter
+        - Start Rek 
+        - Warecraft
+        - Jeeves Bond
+        - Hitterman
+        - Left 4 Undead
+    genreType: Sim, Simulator, Manager, Memer, Farmer, Shooter, Cleaner, Flipper, Rinser
+    geography: Euro
+    hyperbole: Extreme, Most, Ultimate, Final, Legendary, Megatronic, Maximum, JustBuyMe
+    location: Euro, Mars, Phobos, Darth Star, Azurewrath, Florida, Universe
+    object: 
+        - Cube 
+        - Elixir
+        - MacGuffin 
+        - Sword 
+        - Tesseract 
+        - Tome 
+    person: Shattner, Trump, Damian 
+    place: island, colony, zoo, office, arena, land, city, town, village, pit,  dungeon, hospital, theme park, Castle, College
+    platforms: Mobile, VR
+    prefix:
+        - counter
+        - mega
+        - ultra
+        - deep
+        - battle
+        - cyber
+        - Xeno
+        - robo
+        - Morrow
+        - Never
+    postfix:
+        - mageddon
+        - morph
+    profession: Surgeon, Hunter Doctor, Plumber, Soldier, Hygenist, Auditor
+    ship: Star Disturber, Enterpriser, Death Stern, Tie Fitter, X-Wang 
+    sport: rollerblading, Golf, Soccer, Ice Hockey 
+    subjects: 
+        - Alien 
+        - Orc 
+        - Cthulu 
+        - Trump 
+        - Stalin 
+        - Pirate 
+        - Predator
+        - Dictator 
+        - Florida-man 
+        - Cannibal 
+        - soldier 
+        - General 
+        - Parachute 
+        - Ninja
+        - sniper 
+        - Hero 
+        - Enemy 
+        - Peon 
+        - Cop 
+        - Surgeon 
+        - Barbarian 
+        - Gladiator
+    subject_abstract:
+        - Revenge
+        - Domination
+        - Riot
+        - Warrior
+        - surgery
+        - Crossing
+        - Ancestor
+        - Deathmatch
+    status:
+        - Duty
+        - Freedom
+        - Justice
+        - Destiny
+        - Honor
+    struggle:
+        - Peril
+        - Journey
+        - Saga
+        - Quest
+        - Mission
+        - Obstacle
+        - Trial
+        - Warfare    
     this_time: war, warm, personal, love, Trump, over, bs, on
-
+    verb: in, of, of the, from
 modifiers:
     fudge1:
         type: replace

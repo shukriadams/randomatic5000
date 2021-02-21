@@ -10,8 +10,8 @@ try {
 }    
 
 const Randomtic = require('./index'),
-    tries = 1,
+    tries = 20,
     randomatic = new Randomtic(settings)
 
 for (let i = 0; i < tries ; i ++)
-    console.log(randomatic.next())
+    console.log(randomatic.next().result)

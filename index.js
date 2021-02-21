@@ -1,6 +1,5 @@
 const sample = require('lodash.sample'),
     Chance = require('chance'),
-    util = require('util'),
     chance = new Chance()
 /*
 
@@ -40,11 +39,23 @@ function processTemplate(string){
     while(sentence.length){
         const match = findBestNextDo(sentence)
         if (match){
+            let wholeWord = ''
+            // preceeeding pattern
             if (match.start > 0)
-                words.push(sentence.substring(0, match.start))
+                wholeWord = sentence.substring(0, match.start)
 
-            words.push(sentence.substring(match.start, match.reach))
-            sentence = sentence.substring(match.reach + 1)
+            const nextSentence = sentence.substring(match.reach),
+                nextMatch = findBestNextDo(nextSentence)
+
+            // patterns
+            wholeWord += sentence.substring(match.start, match.reach)
+
+            // proceeding pattern
+            if (nextMatch && nextMatch.start > match.reach)
+                wholeWord += sentence.substring(match.reach, nextMatch.start)
+
+            words.push(wholeWord)
+            sentence = nextSentence
 
         } else {
             const nextSpace = sentence.indexOf(' ')
@@ -71,21 +82,15 @@ function processTemplate(string){
 
 const processors = {
     doOptional(word){
-        console.log('doOptional:input:', word)
-
         const matchCheck = word.match(optionalRegex),
             inner = matchCheck.pop()
 
         word = word.replace(optionalRegex, chance.bool({ likelihood: baseLikelihood }) ? inner : '')
 
-        console.log('doOptional:ouput:', word)
-
         return word
     },
 
     doRepeatingSubstitute(word){
-        console.log('doRepeatingSubstitute:input:', word)
-
         let matchCheck = word.match(repeatingSubstituteRegex),
             from = parseInt(matchCheck[1]),
             to = matchCheck[2],
@@ -101,28 +106,29 @@ const processors = {
             from = 0
         }
 
-        // console.log(matchCheck, from, to, setNames, delimiter)
-
         const subs = []
         for (let i = from ; i < to; i ++){
-            const setName = sample(setNames),
-                set = _settings.sets[setName]
 
-            if (!set)
-                throw `Set ${setName} doesnt exist`
-            
-            subs.push(sample(set))
+            const setName = sample(setNames)
+
+            if (_settings.sets[setName]){
+                subs.push(sample(_settings.sets[setName]))
+            } else {
+                // try template
+                if (_settings.templates[setName])
+                    subs.push(processTemplate(_settings.templates[setName]))
+                else
+                    throw `Set or template ${setName} doesnt exist`
+            }
+        
         }
 
         word = subs.join(delimiter)
 
-        console.log('doRepeatingSubstitute:ouput:', word)
         return word
     },
 
     doSubstitute(word){
-        console.log('doSubstitute:input:', word)
-
         const matchCheck = word.match(substituteRegex),
             setNames = matchCheck
                 .pop()
@@ -130,12 +136,14 @@ const processors = {
                 setName = sample(setNames),
                 set = _settings.sets[setName]
         
-        if (!set)
-            throw `Set ${setName} doesnt exist`
-
-        word = word.replace(substituteRegex, `${sample(set)} `)
-        
-        console.log('doSubstitute:ouput:', word)
+        if (_settings.sets[setName])
+            word = word.replace(substituteRegex, sample(_settings.sets[setName]))
+        else {
+            if (_settings.templates[setName])
+                word = processTemplate(_settings.templates[setName])
+            else
+                throw `Set ${setName} doesnt exist`
+        }
 
         return word
     }
@@ -198,49 +206,9 @@ function findBestNextDo(string){
             reach = checks[check].reach
         }
     }
-    
-    /*
-    if (name)
-        console.log('function > ', name, 'on', string)
-    else
-        console.log('passthrough >', string)
-    */
+
     return { function : name, length : maxLength, start, reach }
 }
-
-
-
-function parseTemplate(template){
-    const parsed = {
-        raw: template,
-        parts : []
-    }
-
-    if (typeof template !== 'string')
-        throw `template ${template} should be a string`
-
-    const parts = template.split(' ')
-
-    for (const part of parts){
-        const match = part.match(/{(.*)}/)
-
-        if (match){
-            const rawToken = match.pop()
-            parsed.parts.push({
-                part,
-                rawToken,
-                tokens : rawToken.split('|')
-            })
-        } else {
-            parsed.parts.push({
-                part
-            })
-        }
-    }
-
-    return parsed
-}
-
 
 module.exports = class {
 
@@ -295,16 +263,11 @@ module.exports = class {
         }
 */
         _settings = Object.assign(_settings, settings)
-        
-
-        
     }
 
     next(){
-        const template = sample(_settings.templates)
-        
-        // console.log(util.inspect(_parsedTemplates, { showHidden: false, depth: null }))
-        let output = processTemplate(template)
+        const template = sample(_settings.templates),
+            output = processTemplate(template)
 
         return { 
             template,

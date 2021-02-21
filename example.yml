@@ -7,9 +7,10 @@
 # - use [X-Y{set}] to set a min and max nr of repeats (randomly chosen)
 # - use [X-Y{set},] to set a separator, here "," is specified
 templates:
-    one : "/{hyperbole|ship}/{object}// of the {creature}."
+    one : "!![2{actionLeadWord},]! of the {creature}."
     
 hide:
+    one : "/{hyperbole|ship}/{object}// !![2{actionLeadWord}]! of the {creature}."
     two : Journey of the {ship|creature}'s
     simple: Journey of the {ship}
     more: thing another thing {more}

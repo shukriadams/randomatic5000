@@ -22,7 +22,13 @@ let _settings = {
 }
 const baseLikelihood = 50,
     substituteRegex = /{(.[^\/]*)}/,
-    optionalRegex = /\/(.*)\//
+    optionalRegex = /\/(.*)\//,
+    // entirely enclosed in [ ]
+    // group1 ([0-9]+) : required, integer, nr of times to repeat, must be present
+    // group2 ([-]?[0-9]+)? : optional, creates range of group1 - group2, integers only
+    // group3 {(.*)} : required. set to substitute
+    // group4 (.*?) : optional, everything after set match to closing ]. delimiter
+    repeatingSubstituteRegex = /\[([0-9]+)([-]?[0-9]+)?{(.*)}(.*?)\]/
 
 function processTemplate(string){
     return string
@@ -32,40 +38,80 @@ function processTemplate(string){
         .trim()
 }
 
-const processers = {
+const processors = {
     doOptional(word){
-        const matchCheck = word.match(optionalRegex)
-    
-        if (matchCheck){
-            const inner = matchCheck.pop()
-            word = word.replace(optionalRegex, chance.bool({ likelihood: baseLikelihood }) ? inner : '')
-        }
-    
+        console.log('doOptional:input:', word)
+
+        const matchCheck = word.match(optionalRegex),
+            inner = matchCheck.pop()
+
+        word = word.replace(optionalRegex, chance.bool({ likelihood: baseLikelihood }) ? inner : '')
+
+        console.log('doOptional:ouput:', word)
+
         return word
     },
-    
+
+    doRepeatingSubstitute(word){
+        console.log('doRepeatingSubstitute:input:', word)
+
+        let matchCheck = word.match(repeatingSubstituteRegex),
+            from = parseInt(matchCheck[1]),
+            to = matchCheck[2],
+            setNames = matchCheck[3].split('|'),
+            delimiter = matchCheck[4] || ''
+
+        if (!to){
+            to = from
+            from = 0
+        } else {
+            to = parseInt(to.replace('-', ''))
+            to = chance.integer({min : from, max : to})
+            from = 0
+        }
+
+        // console.log(matchCheck, from, to, setNames, delimiter)
+
+        const subs = []
+        for (let i = from ; i < to; i ++){
+            const setName = sample(setNames),
+                set = _settings.sets[setName]
+
+            if (!set)
+                throw `Set ${setName} doesnt exist`
+
+            
+            subs.push(sample(set))
+        }
+
+        word = subs.join(delimiter)
+
+        console.log('doRepeatingSubstitute:ouput:', word)
+        return word
+    },
+
     doSubstitute(word){
-        const matchCheck = word.match(substituteRegex)
-    
-        if (matchCheck){
-            const setNames = matchCheck
+        console.log('doSubstitute:input:', word)
+
+        const matchCheck = word.match(substituteRegex),
+            setNames = matchCheck
                 .pop()
                 .split('|'),
                 setName = sample(setNames),
                 set = _settings.sets[setName]
-            
-            if (!set)
-                throw `Set ${setName} doesnt exist`
-    
-            word = word.replace(substituteRegex, sample(set))
-        }   
-    
+        
+        if (!set)
+            throw `Set ${setName} doesnt exist`
+
+        word = word.replace(substituteRegex, sample(set))
+        
+        console.log('doSubstitute:ouput:', word)
+
         return word
     }
 }
 
 function processTemplateWord(word){
-    
 
     let processed,
         iterations = 0
@@ -78,7 +124,7 @@ function processTemplateWord(word){
 
         const nextFunction = findBestNextDo(word)
         if (nextFunction)
-            word = processers[nextFunction](word)
+            word = processors[nextFunction](word)
 
         if (processed === word)
             break
@@ -91,14 +137,18 @@ function processTemplateWord(word){
 
 function findBestNextDo(word){
     const checks = {
+        // hash names must match function names in "processors" object
         doOptional : { regex : optionalRegex },
+        doRepeatingSubstitute : {regex : repeatingSubstituteRegex },
         doSubstitute : { regex : substituteRegex }
     }
 
     // find the length of enclosed text returned by each regex
     for (let check in checks){
         let match = word.match(checks[check].regex)
-        checks[check].length = match ? match.pop().length : 0
+        if (match)
+            checks[check].length = match[0].length
+        
     }
 
     // return the name of the pattern with the longest match
@@ -111,7 +161,13 @@ function findBestNextDo(word){
             maxLength = checks[check].length
         }
     }
-
+    
+    /*
+    if (name)
+        console.log('function > ', name, 'on', word)
+    else
+        console.log('passthrough >', word)
+    */
     return name
 }
 

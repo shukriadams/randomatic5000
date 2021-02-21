@@ -6,7 +6,7 @@ sudo apt-get install nodejs -y
 sudo npm install yarn -g
 
 # force startup folder to /src folder in project
-echo "cd /vagrant/src" >> /home/vagrant/.bashrc
+echo "cd /vagrant" >> /home/vagrant/.bashrc
 
 # set hostname, makes console easier to identify
 sudo echo "randomatic" > /etc/hostname

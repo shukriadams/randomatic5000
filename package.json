@@ -9,6 +9,7 @@
         "url": "https://github.com/shukriadams/randomatic5000.git"
     },
     "dependencies": {
+        "@types/node": "14.14.25",
         "fs-extra": "8.0.0",
         "lodash.sample": "4.2.1",
         "chance": "1.1.7",

@@ -5,39 +5,14 @@
 # - as well as mixed"... /foo {myset}/ ..." 
 # - use [X{set}] to denonate how many times a set value will be injected, egs "... [2{mysetName}] ..." mysetName will be added twice
 # - use [X-Y{set}] to set a min and max nr of repeats (randomly chosen)
-# - use [X-Y,{set}] to set a separator, here "," is specified
-fudges:
-    call: carl, Cull, Paul
-    duty: Ditty, Derpy
-
-prefixes:
-    pre1:
-        items : counter, mega, ulta, deep. battle, cyber, Xeno, robo, Morrow, Never
-        chance: 30
-        sets: subjects
-        position: pre # pre|post
-    
-    post1:
-        items: mageddon
-        chance: 10
-        position: post
-        sets: actionLeadWord
-    
-    post2:
-        items: hammer, rinser
-        chance: 30
-        position: post
-        sets: subjects
-
+# - use [X-Y{set},] to set a separator, here "," is specified
 templates:
-    - "{object} of the {creature}"
-    - "Journey of the {ship|creature}'s"
-    simple: "Journey of the {ship}"
-    - "Attack of the {simple}'s"
-    more:
-        - thing
-        - another thing
-        - {more}
+    one : "/{hyperbole|ship}/{object}// of the {creature}."
+    
+hide:
+    two : Journey of the {ship|creature}'s
+    simple: Journey of the {ship}
+    more: thing another thing {more}
     
 sets:
     genreType: Sim, Simulator, Manager, Memer, Farmer, Shooter, Cleaner, Flipper, Rinser
@@ -65,7 +40,9 @@ sets:
     subjects: Alien, Orc, Cthulu, Trump, Stalin, Pirate, Predator, Dictator, Florida-man, Cannibal, soldier, General, Parachute, sniper, Hero, Enemy, Peon, Cop, Surgeon, Barbarian, Gladiator
     ship: Star Disturber, Enterpriser, Death Stern, Tie Fitter, X-Wang, 
     hyperbole: Extreme, Ultimate, Final, Legendary, Megatronic, Maximum, BuyMeNow
-    industryTerms: Mobile, VR, DLC, GOTY, Remaster, {hyperbole} /Collector's/ Edition, /[2-33,{hyperbole}]'s/ Edition
+    platforms: Mobile, VR
+    releaseType: DLC, GOTY, Remaster, {hyperbole} /Collector's/ Edition, /[1-3{hyperbole} ]'s/ Edition
+    
     creature: 
         - zombie
         - dragon
@@ -76,3 +53,28 @@ sets:
         - Wolf
         - Alien
         
+modifiers:
+    fudge1:
+        type: replace
+        words: call
+        use: carl
+        chance: 100
+    fudge2:
+        type: sub
+        words: Duty
+        items: ditty, Derpy
+    join1:
+        use: counter, mega, ulta, deep. battle, cyber, Xeno, robo, Morrow, Never
+        type: pre
+        chance: 30
+        sets: subjects
+    post1:
+        use: mageddon
+        type: post
+        chance: 10
+        sets: actionLeadWord
+    post2:
+        use: hammer, rinser
+        type: post
+        chance: 30
+        sets: subjects        

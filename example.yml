@@ -7,15 +7,21 @@
 # - use [X-Y{set}] to set a min and max nr of repeats (randomly chosen)
 # - use [X-Y{set},] to set a separator, here "," is specified
 templates:
-    one : "!![2{ship}]! of the {creature}."
-    
+    animal_profession: "{animal} {profession}"
+    the_curse_of: "The Curse of {animal_profession} : {person}'s {actionLeadWord}"
+
 hide:
-    one : "/{hyperbole|ship}/{object}// !![2{actionLeadWord}]! of the {creature}."
+    x_ofthe_creaure : "{actionLeadWord} of the {creature}/!/"
     two : Journey of the {ship|creature}'s
     simple: Journey of the {ship}
     more: thing another thing {more}
-    
+    this_time_its: This time it's {this_time}!
+
 sets:
+    animal: Deer, Bear, Rodent, Chimpanzee
+    bullshit: Battle Royale, AD, 5000, 4K, 10K
+    
+    era: Ancient, Modern, Future, Post-Modern
     genreType: Sim, Simulator, Manager, Memer, Farmer, Shooter, Cleaner, Flipper, Rinser
     actionLeadWord: 
         - Call
@@ -42,8 +48,11 @@ sets:
     ship: Star Disturber, Enterpriser, Death Stern, Tie Fitter, X-Wang, 
     hyperbole: Extreme, Most, Ultimate, Final, Legendary, Megatronic, Maximum, JustBuyMe
     platforms: Mobile, VR
-    releaseType: DLC, GOTY, Remaster, {hyperbole} /Collector's/ Edition, /[1-3{hyperbole} ]'s/ Edition
-    
+    edition: DLC, GOTY, Remaster, {hyperbole} Edition, /[1-3{hyperbole} ]/ Collector's Edition
+    geography: Euro
+    place: island, colony, zoo, office, 
+    profession: Surgeon, Hunter Doctor, Plumber, Soldier, Hygenist, Auditor
+    franchis: Star Battles, Tony Hark Rollerskating, Star Track, Strikecounter, Start Rek, Warecraft, Jeeves Bond, Hitterman, Left 4 Undead
     creature: 
         - zombie
         - dragon
@@ -53,7 +62,8 @@ sets:
         - Wraith
         - Wolf
         - Alien
-        
+    this_time: war, warm, personal, love, Trump, over, bs, on
+
 modifiers:
     fudge1:
         type: replace

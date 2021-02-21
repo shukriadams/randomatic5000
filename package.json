@@ -8,6 +8,9 @@
         "type": "git",
         "url": "https://github.com/shukriadams/randomatic5000.git"
     },
+    "scripts": {
+        "debug": "node --inspect-brk=0.0.0.0:3001 test"
+    },
     "dependencies": {
         "@types/node": "14.14.25",
         "fs-extra": "8.0.0",

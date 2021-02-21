@@ -21,9 +21,9 @@ let _settings = {
     sets: {}
 }
 const baseLikelihood = 50,
-    // look for text enclosed in "{ }". Ignore text that contains "\", "[" and "]", as these
+    // look for text enclosed in "{ }". Ignore text that contains "{" "\", "[" and "]", as these are wrappers
     // belong to other wrappers
-    substituteRegex = /{(.[^\/\[\]]*)}/,
+    substituteRegex = /{(.[^{\/\[\]]*)}/,
     optionalRegex = /\/(.*)\//,
     // entirely enclosed in [ ]
     // group1 ([0-9]+) : required, integer, nr of times to repeat, must be present
@@ -67,12 +67,6 @@ function processTemplate(string){
         rendered.push(processTemplateWord(word))
     
     return rendered.join('').trim()
-
-    return string
-        .split(' ')
-        .map(word => processTemplateWord(word))
-        .join(' ')
-        .trim()
 }
 
 const processors = {
@@ -139,7 +133,7 @@ const processors = {
         if (!set)
             throw `Set ${setName} doesnt exist`
 
-        word = word.replace(substituteRegex, sample(set))
+        word = word.replace(substituteRegex, `${sample(set)} `)
         
         console.log('doSubstitute:ouput:', word)
 
@@ -282,7 +276,7 @@ module.exports = class {
         // convert set to arrays
         for (let setName in settings.sets)
             if (typeof settings.sets[setName] === 'string')
-                settings.sets[setName] = settings.sets[setName].split(',')
+                settings.sets[setName] = settings.sets[setName].split(',').map(item => item.trim())
 
 /*
         // ensure that sets defined in templates exist

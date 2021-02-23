@@ -23,7 +23,7 @@ templates:
     hard: "{person|profession}'s {adversity}"
     drama: "{adversity} on the /{creature} /{ship}"
     sportsball: "/{hyperbole} /{sport} - {location} edition"
-    
+    meme: "{lord}lord : {struggle} {verb} the {memest} {meme_type}"
 
 sets:
     actionLeadWord: 
@@ -123,6 +123,9 @@ sets:
     geography: Euro
     hyperbole: Extreme, Ultimate, Final, Legendary, Megatronic, Maximum
     location: Euro, Mars, Phobos, Darth Star, Azurewrath, Florida, Universe
+    lord: Dank, Meme, Edge, Yeet
+    memest: Dankest, Moistest, Freshest, Boomerest, Yeetest, Yeeziest
+    meme_type: Boomer, Zoomer, Yeet, Tidepod
     object: 
         - Cube 
         - Elixir
@@ -130,9 +133,9 @@ sets:
         - Sword 
         - Tesseract 
         - Tome 
-    person: Shattner, Trump, Damian, Stalin, Venkman
+    person: Shattner, Trump, Damian, Stalin, Venkman, Kanye
     place: island, colony, zoo, office, arena, land, city, town, village, pit,  dungeon, hospital, theme park, Castle, College
-    platforms: Mobile, VR
+    platforms: Mobile, VR, PX3
     prefix:
         - counter
         - mega
@@ -147,7 +150,7 @@ sets:
     postfix:
         - mageddon
         - morph
-    profession: Surgeon, Hunter Doctor, Plumber, Soldier, Hygenist, Auditor
+    profession: Surgeon, Hunter Doctor, Plumber, Soldier, Hygenist, Auditor, Janitor, Dentist, Lawyer
     ship: Star Disturber, Enterpriser, Death Moon, Tie Fitter, X-Wang, Titanic
     sport: rollerballing, Golf, Soccer, Ice Hockey, Irongrid 
     subject: 
@@ -201,7 +204,7 @@ sets:
         - Trial
         - Warfare 
         - Struggle   
-    time: Past, Ancient, Modern, Future, Post-Modern, Recent
+    time: Past, Ancient, Modern, Future, Post-Modern, Recent, Current
     this_time: war, warm, personal, love, Trump, over, bs, on
     verb: in, of, of the, from
 
